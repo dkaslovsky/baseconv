@@ -160,7 +160,7 @@ func TestFromBase10(t *testing.T) {
 				t.Fatalf("test case \"%s\": non nil error: %s", name, err)
 			}
 			if !reflect.DeepEqual(val, test.expected) {
-				t.Fatalf("test case \"%s\": expected %d not equal to actual %d", name, test.expected, val)
+				t.Fatalf("test case \"%s\": expected %v not equal to actual %v", name, test.expected, val)
 			}
 		})
 	}

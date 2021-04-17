@@ -6,9 +6,13 @@ import (
 )
 
 // FromBase10 converts a base 10 number to a slice representing the number in a specified base
-func FromBase10(num, base int64) []int64 {
+func FromBase10(num, base int64) ([]int64, error) {
+	if err := validateBase(base); err != nil {
+		return []int64{0}, err
+	}
+
 	if num == 0 {
-		return []int64{0}
+		return []int64{0}, nil
 	}
 
 	b := float64(base)
@@ -23,11 +27,15 @@ func FromBase10(num, base int64) []int64 {
 		num = num % digitInBase10
 	}
 
-	return newBaseDigits
+	return newBaseDigits, nil
 }
 
 // ToBase10 converts a number in a specified base represented by a slice into its base 10 value
 func ToBase10(num []int64, base int64) (int64, error) {
+	if err := validateBase(base); err != nil {
+		return 0, err
+	}
+
 	b := float64(base)
 	numDigits := len(num)
 
@@ -41,4 +49,11 @@ func ToBase10(num []int64, base int64) (int64, error) {
 		base10 += n * int64(math.Pow(b, float64(exponent)))
 	}
 	return base10, nil
+}
+
+func validateBase(base int64) error {
+	if base < 2 {
+		return fmt.Errorf("base cannot be less than 2")
+	}
+	return nil
 }

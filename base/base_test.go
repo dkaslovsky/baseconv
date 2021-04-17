@@ -88,6 +88,14 @@ func TestToBase10WithError(t *testing.T) {
 			num:  []int64{501},
 			base: 500,
 		},
+		"target base 0": {
+			num:  []int64{1},
+			base: 0,
+		},
+		"target base 1": {
+			num:  []int64{0},
+			base: 1,
+		},
 	}
 
 	for name, test := range tests {
@@ -147,9 +155,39 @@ func TestFromBase10(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			val := FromBase10(test.num, test.base)
+			val, err := FromBase10(test.num, test.base)
+			if err != nil {
+				t.Fatalf("test case \"%s\": non nil error: %s", name, err)
+			}
 			if !reflect.DeepEqual(val, test.expected) {
 				t.Fatalf("test case \"%s\": expected %d not equal to actual %d", name, test.expected, val)
+			}
+		})
+	}
+}
+
+func TestFromBase10WithError(t *testing.T) {
+	type testCase struct {
+		num  int64
+		base int64
+	}
+
+	tests := map[string]testCase{
+		"target base 0": {
+			num:  1,
+			base: 0,
+		},
+		"target base 1": {
+			num:  0,
+			base: 1,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			_, err := FromBase10(test.num, test.base)
+			if err == nil {
+				t.Fatalf("test case \"%s\": expected non nil error", name)
 			}
 		})
 	}

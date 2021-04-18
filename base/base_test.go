@@ -192,3 +192,98 @@ func TestFromBase10WithError(t *testing.T) {
 		})
 	}
 }
+
+func TestGetLargestBase10Number(t *testing.T) {
+	type testCase struct {
+		base     uint64
+		digits   uint64
+		expected uint64
+	}
+
+	tests := map[string]testCase{
+		// "base=0 digits=10": {
+		// 	base:     0,
+		// 	digits:   10,
+		// 	expected: 0,
+		// },
+		// "base=1 digits=10": {
+		// 	base:     1,
+		// 	digits:   10,
+		// 	expected: 0,
+		// },
+		"base=2 digits=3": {
+			base:     2,
+			digits:   3,
+			expected: 7,
+		},
+		"base=2 digits=10": {
+			base:     2,
+			digits:   10,
+			expected: 1023,
+		},
+		"base=10 digits=6": {
+			base:     10,
+			digits:   6,
+			expected: 999_999,
+		},
+		"base=2 digits=1": {
+			base:     2,
+			digits:   1,
+			expected: 1,
+		},
+		"base=200 digits=1": {
+			base:     200,
+			digits:   1,
+			expected: 199,
+		},
+		"base=2 digits=0": {
+			base:     2,
+			digits:   0,
+			expected: 0,
+		},
+		"base=2000 digits=0": {
+			base:     2000,
+			digits:   0,
+			expected: 0,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			val, err := GetLargestBase10Number(test.base, test.digits)
+			if err != nil {
+				t.Fatalf("test case \"%s\": non nil error: %s", name, err)
+			}
+			if val != test.expected {
+				t.Fatalf("test case \"%s\": expected %d not equal to actual %d", name, test.expected, val)
+			}
+		})
+	}
+}
+
+func TestGetLargestBase10NumberWithError(t *testing.T) {
+	type testCase struct {
+		base   uint64
+		digits uint64
+	}
+
+	tests := map[string]testCase{
+		"base=0 digits=10": {
+			base:   0,
+			digits: 10,
+		},
+		"base=1 digits=10": {
+			base:   1,
+			digits: 10,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			_, err := GetLargestBase10Number(test.base, test.digits)
+			if err == nil {
+				t.Fatalf("test case \"%s\": expected non nil error", name)
+			}
+		})
+	}
+}

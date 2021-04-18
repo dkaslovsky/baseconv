@@ -51,6 +51,15 @@ func ToBase10(num []uint64, base uint64) (uint64, error) {
 	return base10, nil
 }
 
+// GetLargestBase10Number returns the largest base 10 number that can be represented
+// in the specified base with the specified number of digits
+func GetLargestBase10Number(base, digits uint64) (uint64, error) {
+	if err := validateBase(base); err != nil {
+		return 0, err
+	}
+	return uint64(math.Pow(float64(base), float64(digits)) - 1), nil
+}
+
 func validateBase(base uint64) error {
 	if base < 2 {
 		return fmt.Errorf("base cannot be less than 2")

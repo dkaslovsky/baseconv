@@ -7,8 +7,13 @@ import (
 
 const alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-// Size is the length of the alphabet
-var Size = len(alphabet)
+var (
+	// Size is the length of the alphabet
+	Size = len(alphabet)
+
+	// zero is used for padding a string from the alphabet with a prefix to reached a desired length
+	zero = alphabet[0]
+)
 
 // ToString maps a slice of numbers to a string of corresponding characters
 func ToString(numeric []uint64) (string, error) {
@@ -21,6 +26,22 @@ func ToString(numeric []uint64) (string, error) {
 		str = append(str, alphabet[n])
 	}
 	return string(str), nil
+}
+
+// ToPaddedString maps a slice of numbers to a string of corresponding characters of a specified length with zero-padding if necessary
+func ToPaddedString(numeric []uint64, strLen int) (string, error) {
+	str, err := ToString(numeric)
+	if err != nil {
+		return "", err
+	}
+
+	padLen := strLen - len(str)
+	if padLen < 0 {
+		return "", fmt.Errorf("cannot convert numeric array %v to string of length %d", numeric, strLen)
+	}
+
+	padding := strings.Repeat(string(zero), padLen)
+	return padding + str, nil
 }
 
 // FromString maps a string of characters to a slice of corresponding numbers

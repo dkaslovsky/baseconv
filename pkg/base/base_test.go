@@ -201,16 +201,6 @@ func TestGetLargestBase10Number(t *testing.T) {
 	}
 
 	tests := map[string]testCase{
-		// "base=0 digits=10": {
-		// 	base:     0,
-		// 	digits:   10,
-		// 	expected: 0,
-		// },
-		// "base=1 digits=10": {
-		// 	base:     1,
-		// 	digits:   10,
-		// 	expected: 0,
-		// },
 		"base=2 digits=3": {
 			base:     2,
 			digits:   3,

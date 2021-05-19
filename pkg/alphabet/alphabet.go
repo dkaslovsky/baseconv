@@ -21,7 +21,7 @@ func ToString(numeric []uint64) (string, error) {
 	str := []byte{}
 	for _, n := range numeric {
 		if n >= sz {
-			return "", fmt.Errorf("value %d exceeds alphabet size of %d", n, sz)
+			return "", fmt.Errorf("value [%d] exceeds alphabet size of [%d]", n, sz)
 		}
 		str = append(str, alphabet[n])
 	}

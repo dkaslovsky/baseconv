@@ -83,7 +83,7 @@ func parseArgs(cmd *flag.FlagSet, opts *cmdOpts, args []string) error {
 
 	// handle positional argument(s)
 	if cmd.NArg() != 1 {
-		return fmt.Errorf("must specify base 10 integer to encode as single positional argument")
+		return errors.New("must specify base 10 integer to encode as single positional argument")
 	}
 	num, err := strconv.ParseUint(cmd.Arg(0), 10, 64)
 	if err != nil {

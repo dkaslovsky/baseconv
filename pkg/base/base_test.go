@@ -1,6 +1,7 @@
 package base
 
 import (
+	"math"
 	"reflect"
 	"testing"
 )
@@ -151,6 +152,11 @@ func TestFromBase10(t *testing.T) {
 			base:     10,
 			expected: []uint64{5, 8, 7},
 		},
+		"convert to base 10 from base 10 with multiple of 10": {
+			num:      1000,
+			base:     10,
+			expected: []uint64{1, 0, 0, 0},
+		},
 	}
 
 	for name, test := range tests {
@@ -273,6 +279,73 @@ func TestGetLargestBase10NumberWithError(t *testing.T) {
 			_, err := GetLargestBase10Number(test.base, test.digits)
 			if err == nil {
 				t.Fatalf("test case \"%s\": expected non nil error", name)
+			}
+		})
+	}
+}
+
+func TestGetNumDigits(t *testing.T) {
+	type testCase struct {
+		num      float64
+		base     float64
+		tol      float64
+		expected int
+	}
+
+	tests := map[string]testCase{
+		"exact power of 10 represented in base 10": {
+			num:      1000,
+			base:     10,
+			tol:      1e-10,
+			expected: 4,
+		},
+		"multiple of exact power of 10 represented in base 10": {
+			num:      3000,
+			base:     10,
+			tol:      1e-10,
+			expected: 4,
+		},
+		"exact power of 2 represented in base 2": {
+			num:      64,
+			base:     2,
+			tol:      1e-10,
+			expected: 7,
+		},
+		"one less than exact power of 2 represented in base 2": {
+			num:      63,
+			base:     2,
+			tol:      1e-10,
+			expected: 6,
+		},
+		"one more than exact power of 2 represented in base 2": {
+			num:      65,
+			base:     2,
+			tol:      1e-10,
+			expected: 7,
+		},
+		"contrived example where roundoff tolerance is used": {
+			// num can't really be a float, but it is selected here to simulate the effect of roundoff
+			// error in the calculation
+			num:      math.Pow(2, 2.999),
+			base:     2,
+			tol:      1e-1,
+			expected: 4,
+		},
+		"contrived example where roundoff tolerance is not used": {
+			// num can't really be a float, but it is selected here to simulate the effect of roundoff
+			// error in the calculation
+			num:      math.Pow(5, 2.999),
+			base:     5,
+			tol:      1e-10,
+			expected: 3,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			numDigits := getNumDigits(test.num, test.base, test.tol)
+			if numDigits != test.expected {
+				t.Fatalf("test case \"%s\": expected %d not equal to actual %d", name, test.expected, numDigits)
 			}
 		})
 	}

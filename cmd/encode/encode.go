@@ -1,6 +1,7 @@
 package encode
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"strconv"
@@ -12,7 +13,15 @@ import (
 // Run executes the encode (sub)command
 func Run(args []string) error {
 	cmd := flag.NewFlagSet("encode", flag.ExitOnError)
-	opts, err := parseArgs(cmd, args)
+	opts := &cmdOpts{}
+	attachOpts(cmd, opts)
+	setUsage(cmd)
+
+	err := parseArgs(cmd, opts, args)
+	if err == errNoArgs {
+		cmd.Usage()
+		return nil
+	}
 	if err != nil {
 		return err
 	}
@@ -59,26 +68,30 @@ func attachOpts(cmd *flag.FlagSet, opts *cmdOpts) {
 	cmd.BoolVar(&opts.pad, "pad", false, "pad output to have exactly the number of specified digits")
 }
 
-func parseArgs(cmd *flag.FlagSet, args []string) (*cmdOpts, error) {
-	opts := &cmdOpts{}
-	attachOpts(cmd, opts)
+// errorNoArgs is returned when no arguments are passed to the command
+var errNoArgs = errors.New("missing required argument(s)")
+
+func parseArgs(cmd *flag.FlagSet, opts *cmdOpts, args []string) error {
+	if len(args) == 0 {
+		return errNoArgs
+	}
 
 	err := cmd.Parse(args)
 	if err != nil {
-		return opts, err
+		return err
 	}
 
 	// handle positional argument(s)
 	if cmd.NArg() != 1 {
-		return opts, fmt.Errorf("must specify base 10 integer to encode as single positional argument")
+		return fmt.Errorf("must specify base 10 integer to encode as single positional argument")
 	}
 	num, err := strconv.ParseUint(cmd.Arg(0), 10, 64)
 	if err != nil {
-		return opts, fmt.Errorf("could not parse positional argument %s as uint64", cmd.Arg(0))
+		return fmt.Errorf("could not parse positional argument %s as uint64", cmd.Arg(0))
 	}
 	opts.num = num
 
-	return opts, validateOpts(opts)
+	return validateOpts(opts)
 }
 
 func validateOpts(opts *cmdOpts) error {
@@ -90,4 +103,14 @@ func validateOpts(opts *cmdOpts) error {
 		return fmt.Errorf("cannot encode %d in base %d with %d digits", opts.num, opts.base, opts.maxDigits)
 	}
 	return nil
+}
+
+func setUsage(cmd *flag.FlagSet) {
+	cmd.Usage = func() {
+		fmt.Printf("%s encodes a base 10 integer in a new base\n\n", cmd.Name())
+		fmt.Printf("%s [flags] base10Int\n\n", cmd.Name())
+		fmt.Printf("Args:\n  base10Int - positive base 10 integer to encode (required)\n\n")
+		fmt.Printf("Flags:\n")
+		cmd.PrintDefaults()
+	}
 }

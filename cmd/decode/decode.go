@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/dkaslovsky/baseconv/pkg/alphabet"
-	b "github.com/dkaslovsky/baseconv/pkg/base"
+	"github.com/dkaslovsky/baseconv/pkg/baseconv"
 )
 
 type cmdOpts struct {
@@ -37,7 +37,7 @@ func Run(args []string) error {
 		return err
 	}
 
-	dec, err := b.ToBase10(numeric, opts.base)
+	dec, err := baseconv.ToBase10(numeric, opts.base)
 	if err != nil {
 		return err
 	}

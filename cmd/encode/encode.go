@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/dkaslovsky/baseconv/pkg/alphabet"
-	b "github.com/dkaslovsky/baseconv/pkg/base"
+	"github.com/dkaslovsky/baseconv/pkg/baseconv"
 )
 
 // Run executes the encode (sub)command
@@ -26,7 +26,7 @@ func Run(args []string) error {
 		return err
 	}
 
-	enc, err := b.FromBase10(opts.num, opts.base)
+	enc, err := baseconv.FromBase10(opts.num, opts.base)
 	if err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func validateOpts(opts *cmdOpts) error {
 	if opts.base > maxBase {
 		return fmt.Errorf("base [%d] exceeds alphabet size [%d]", opts.base, maxBase)
 	}
-	maxNum, err := b.GetLargestBase10Number(opts.base, opts.maxDigits)
+	maxNum, err := baseconv.GetLargestBase10Number(opts.base, opts.maxDigits)
 	if err != nil {
 		return err
 	}

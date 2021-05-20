@@ -72,29 +72,24 @@ func TestToStringWithError(t *testing.T) {
 
 func TestToPaddedString(t *testing.T) {
 	type testCase struct {
-		numeric  []uint64
+		str      string
 		strLen   int
 		expected string
 	}
 
 	tests := map[string]testCase{
 		"strLen equal to length of input": {
-			numeric:  []uint64{17, 14, 47, 47, 24, 1, 2, 3},
-			strLen:   8,
-			expected: "heLLo123",
+			str:      "heLLo",
+			strLen:   5,
+			expected: "heLLo",
 		},
 		"strLen greater than length of input": {
-			numeric:  []uint64{17, 14, 47, 47, 24, 1, 2, 3},
+			str:      "heLLo",
 			strLen:   10,
-			expected: "00heLLo123",
+			expected: "00000heLLo",
 		},
-		"single zero with strLen 5": {
-			numeric:  []uint64{0},
-			strLen:   5,
-			expected: "00000",
-		},
-		"four zeros with strLen 5": {
-			numeric:  []uint64{0, 0, 0, 0},
+		"empty string input": {
+			str:      "",
 			strLen:   5,
 			expected: "00000",
 		},
@@ -102,7 +97,7 @@ func TestToPaddedString(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			str, err := ToPaddedString(test.numeric, test.strLen)
+			str, err := Pad(test.str, test.strLen)
 			if err != nil {
 				t.Fatalf("test case \"%s\": non nil error: %s", name, err)
 			}
@@ -113,22 +108,22 @@ func TestToPaddedString(t *testing.T) {
 	}
 }
 
-func TestToPaddedStringWithError(t *testing.T) {
+func TestPadWithError(t *testing.T) {
 	type testCase struct {
-		numeric []uint64
-		strLen  int
+		str    string
+		strLen int
 	}
 
 	tests := map[string]testCase{
 		"strLen less than length of input": {
-			numeric: []uint64{1, 2, 3},
-			strLen:  2,
+			str:    "heLLo",
+			strLen: 2,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			_, err := ToPaddedString(test.numeric, test.strLen)
+			_, err := Pad(test.str, test.strLen)
 			if err == nil {
 				t.Fatalf("test case \"%s\": expected non nil error", name)
 			}

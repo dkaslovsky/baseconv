@@ -15,6 +15,19 @@ var (
 	zero = alphabet[0]
 )
 
+// FromString maps a string of characters to a slice of corresponding numbers
+func FromString(str string) ([]uint64, error) {
+	numeric := []uint64{}
+	for _, s := range str {
+		i := strings.Index(alphabet, string(s))
+		if i == -1 {
+			return numeric, fmt.Errorf("character %c not found in alphabet", s)
+		}
+		numeric = append(numeric, uint64(i))
+	}
+	return numeric, nil
+}
+
 // ToString maps a slice of numbers to a string of corresponding characters
 func ToString(numeric []uint64) (string, error) {
 	sz := uint64(Size)
@@ -28,31 +41,12 @@ func ToString(numeric []uint64) (string, error) {
 	return string(str), nil
 }
 
-// ToPaddedString maps a slice of numbers to a string of corresponding characters of a specified length with zero-padding if necessary
-func ToPaddedString(numeric []uint64, strLen int) (string, error) {
-	str, err := ToString(numeric)
-	if err != nil {
-		return "", err
-	}
-
+// Pad appends the zero character of the alphabet to a string to produce a desired length
+func Pad(str string, strLen int) (string, error) {
 	padLen := strLen - len(str)
 	if padLen < 0 {
-		return "", fmt.Errorf("cannot convert numeric array %v to string of length %d", numeric, strLen)
+		return "", fmt.Errorf("input string length [%d] exceeds desired padded length [%d]", len(str), strLen)
 	}
-
 	padding := strings.Repeat(string(zero), padLen)
 	return padding + str, nil
-}
-
-// FromString maps a string of characters to a slice of corresponding numbers
-func FromString(str string) ([]uint64, error) {
-	numeric := []uint64{}
-	for _, s := range str {
-		i := strings.Index(alphabet, string(s))
-		if i == -1 {
-			return numeric, fmt.Errorf("character %c not found in alphabet", s)
-		}
-		numeric = append(numeric, uint64(i))
-	}
-	return numeric, nil
 }

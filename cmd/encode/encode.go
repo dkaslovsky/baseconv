@@ -30,20 +30,18 @@ func Run(args []string) error {
 	if err != nil {
 		return err
 	}
-
-	if opts.pad {
-		str, err := alphabet.ToPaddedString(enc, int(opts.maxDigits))
-		if err != nil {
-			return err
-		}
-		fmt.Println(str)
-		return nil
-	}
-
 	str, err := alphabet.ToString(enc)
 	if err != nil {
 		return err
 	}
+
+	if opts.pad {
+		str, err = alphabet.Pad(str, int(opts.maxDigits))
+		if err != nil {
+			return err
+		}
+	}
+
 	fmt.Println(str)
 	return nil
 }

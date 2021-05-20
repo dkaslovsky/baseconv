@@ -110,7 +110,8 @@ func validateOpts(opts *cmdOpts) error {
 func setUsage(cmd *flag.FlagSet) {
 	cmd.Usage = func() {
 		fmt.Printf("%s encodes a base 10 integer in a new base\n\n", cmd.Name())
-		fmt.Printf("%s [flags] base10Int\n\n", cmd.Name())
+		fmt.Print("Usage:\n")
+		fmt.Printf("  %s [flags] base10Int\n\n", cmd.Name())
 		fmt.Printf("Args:\n  base10Int - positive base 10 integer to encode (required)\n\n")
 		fmt.Printf("Flags:\n")
 		cmd.PrintDefaults()

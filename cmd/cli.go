@@ -7,6 +7,8 @@ import (
 	"github.com/dkaslovsky/baseconv/cmd/encode"
 )
 
+const name = "baseconv"
+
 // Run executes the top level command
 func Run(cliArgs []string) error {
 
@@ -32,5 +34,10 @@ func Run(cliArgs []string) error {
 }
 
 func printUsage() {
-	fmt.Println("usage goes here")
+	fmt.Printf("%s converts base 10 integers to string representations in other bases\n\n", name)
+	fmt.Print("Usage:\n")
+	fmt.Printf("  %s command [flags]\n\n", name)
+	fmt.Print("Commands:\n")
+	fmt.Print("  encode - encodes a base 10 integer in a new base\n")
+	fmt.Print("  decode - decodes a string representation of a base 10 integer\n")
 }

@@ -13,7 +13,7 @@ func FromString(str string) ([]uint64, error) {
 	for _, s := range str {
 		i := strings.Index(alphabet, string(s))
 		if i == -1 {
-			return numeric, fmt.Errorf("character %c not found in alphabet", s)
+			return numeric, fmt.Errorf("character [%c] not found in alphabet", s)
 		}
 		numeric = append(numeric, uint64(i))
 	}

@@ -93,6 +93,10 @@ func parseArgs(cmd *flag.FlagSet, opts *cmdOpts, args []string) error {
 }
 
 func validateOpts(opts *cmdOpts) error {
+	maxBase := alphabet.Len()
+	if opts.base > maxBase {
+		return fmt.Errorf("base [%d] exceeds alphabet size [%d]", opts.base, maxBase)
+	}
 	maxNum, err := b.GetLargestBase10Number(opts.base, opts.maxDigits)
 	if err != nil {
 		return err

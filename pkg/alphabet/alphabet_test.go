@@ -50,13 +50,13 @@ func TestToStringWithError(t *testing.T) {
 
 	tests := map[string]testCase{
 		"single value equal to alphabet size": {
-			numeric: []uint64{uint64(Size)},
+			numeric: []uint64{Len()},
 		},
 		"single value larger than alphabet size": {
-			numeric: []uint64{uint64(Size) + 1},
+			numeric: []uint64{Len() + 1},
 		},
 		"mixed values of larger than and smaller than alphabet size": {
-			numeric: []uint64{0, uint64(Size) + 1},
+			numeric: []uint64{0, Len() + 1},
 		},
 	}
 

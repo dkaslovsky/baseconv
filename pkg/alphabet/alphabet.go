@@ -7,14 +7,6 @@ import (
 
 const alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-var (
-	// Size is the length of the alphabet
-	Size = len(alphabet)
-
-	// zero is used for padding a string from the alphabet with a prefix to reached a desired length
-	zero = alphabet[0]
-)
-
 // FromString maps a string of characters to a slice of corresponding numbers
 func FromString(str string) ([]uint64, error) {
 	numeric := []uint64{}
@@ -30,11 +22,10 @@ func FromString(str string) ([]uint64, error) {
 
 // ToString maps a slice of numbers to a string of corresponding characters
 func ToString(numeric []uint64) (string, error) {
-	sz := uint64(Size)
 	str := []byte{}
 	for _, n := range numeric {
-		if n >= sz {
-			return "", fmt.Errorf("value [%d] exceeds alphabet size of [%d]", n, sz)
+		if n >= Len() {
+			return "", fmt.Errorf("value [%d] cannot be represented in alphabet of size [%d]", n, Len())
 		}
 		str = append(str, alphabet[n])
 	}
@@ -47,6 +38,16 @@ func Pad(str string, strLen int) (string, error) {
 	if padLen < 0 {
 		return "", fmt.Errorf("input string length [%d] exceeds desired padded length [%d]", len(str), strLen)
 	}
-	padding := strings.Repeat(string(zero), padLen)
+	padding := strings.Repeat(zero(), padLen)
 	return padding + str, nil
+}
+
+// Len returns the length of the alphabet
+func Len() uint64 {
+	return uint64(len(alphabet))
+}
+
+// zero is the character used for padding a string to reach a desired length
+func zero() string {
+	return string(alphabet[0])
 }

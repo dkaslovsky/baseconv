@@ -70,6 +70,14 @@ func parseArgs(cmd *flag.FlagSet, opts *cmdOpts, args []string) error {
 	}
 	opts.enc = cmd.Arg(0)
 
+	return validateOpts(opts)
+}
+
+func validateOpts(opts *cmdOpts) error {
+	maxBase := alphabet.Len()
+	if opts.base > maxBase {
+		return fmt.Errorf("base [%d] exceeds alphabet size [%d]", opts.base, maxBase)
+	}
 	return nil
 }
 

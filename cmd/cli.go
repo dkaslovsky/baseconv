@@ -34,7 +34,7 @@ func Run(cliArgs []string) error {
 }
 
 func printUsage() {
-	fmt.Printf("%s converts base 10 integers to string representations in other bases\n\n", name)
+	fmt.Printf("%s converts between base 10 integers and string representations in arbitraty bases\n\n", name)
 	fmt.Print("Usage:\n")
 	fmt.Printf("  %s command [flags]\n\n", name)
 	fmt.Print("Commands:\n")

@@ -83,7 +83,7 @@ func validateOpts(opts *cmdOpts) error {
 
 func setUsage(cmd *flag.FlagSet) {
 	cmd.Usage = func() {
-		fmt.Printf("%s decodes a string representation of a base 10 integer\n\n", cmd.Name())
+		fmt.Printf("%s decodes a string representation of a base 10 integer from an arbitrary base\n\n", cmd.Name())
 		fmt.Print("Usage:\n")
 		fmt.Printf("  %s [flags] stringRep\n\n", cmd.Name())
 		fmt.Printf("Args:\n  stringRep - string representation of an encoded base 10 integer to decode (required)\n\n")

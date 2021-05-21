@@ -32,13 +32,13 @@ func ToString(numeric []uint64) (string, error) {
 	return string(str), nil
 }
 
-// Pad appends the zero character of the alphabet to a string to produce a desired length
+// Pad appends the zero character of the alphabet to a string to produce a string of desired length
 func Pad(str string, strLen int) (string, error) {
 	padLen := strLen - len(str)
 	if padLen < 0 {
 		return "", fmt.Errorf("input string length [%d] exceeds desired padded length [%d]", len(str), strLen)
 	}
-	padding := strings.Repeat(zero(), padLen)
+	padding := strings.Repeat(Zero(), padLen)
 	return padding + str, nil
 }
 
@@ -47,7 +47,7 @@ func Len() uint64 {
 	return uint64(len(alphabet))
 }
 
-// zero is the character used for padding a string to reach a desired length
-func zero() string {
+// Zero returns the alphabet's index-zero character used for padding a string
+func Zero() string {
 	return string(alphabet[0])
 }

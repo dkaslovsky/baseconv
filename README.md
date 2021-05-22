@@ -1,13 +1,16 @@
 # baseconv
 
-baseconv is a lightweight, dependency-free, Golang package and CLI for converting between base 10 integers and string representations in an arbitrary base.
+Lightweight, dependency-free, Golang package and CLI for converting between base 10 integers and string representations in an arbitrary base.
 
-A practical use for such a package is efficiently encoding very large intergers using fewer bits than required in base 10 and, equivalently, 
-converting a very large number of intergers (e.g., auto-incrementing primay keys) to short, unique strings as is done by URL shorterners.
+## Overview
 
-For example, the `1,000,000,000,000`th URL stored in a database is efficiently mapped to the unique slug `hBxM5A4`.  Given this slug as part of a URL (e.g., `myshorturl.com/hBxM5A4`), it can be uniquely mapped back to the integer that serves as the primary key in a database storing the full URL to which the user is to be redirected.
+baseconv can be used to efficiently encode very large integers into short, unique strings ("slugs").
+By converting a large base 10 integer to a different base, the original integer is encoded in a string representation using fewer bits.
 
-baseconv uses an alphabet that supports encoding bases between 2 and 62, inclusive.
+URL shorteners often use such encodings to map integer database keys to unique slugs that serve as shortened URLs.
+For example, the `1,000,000,000,000`th URL stored in a database can be mapped to the unique slug `hBxM5A4` by converting to base 62.  Given this slug as part of a URL (e.g., `shorturl.xyz/hBxM5A4`), it can be uniquely mapped back to the integer key used to lookup the full URL.
+
+baseconv uses an alphabet that supports encoding in base b, 2 <= b <= 62.
 
 ## CLI Usage
 

@@ -26,13 +26,18 @@ func Run(args []string) error {
 		return err
 	}
 
+	return run(opts)
+}
+
+func run(opts *cmdOpts) error {
 	enc, err := baseconv.FromBase10(opts.num, opts.base)
 	if err != nil {
 		return err
 	}
-	str, err := alphabet.ToString(enc)
-	if err != nil {
-		return err
+
+	str, serr := alphabet.ToString(enc)
+	if serr != nil {
+		return serr
 	}
 
 	if opts.pad {
@@ -45,6 +50,9 @@ func Run(args []string) error {
 	fmt.Println(str)
 	return nil
 }
+
+// errorNoArgs is returned when no arguments are passed to the command
+var errNoArgs = errors.New("missing required argument(s)")
 
 type cmdOpts struct {
 	// command flags
@@ -67,14 +75,10 @@ func attachOpts(cmd *flag.FlagSet, opts *cmdOpts) {
 	cmd.BoolVar(&opts.pad, "pad", false, "pad output to have exactly the number of specified digits")
 }
 
-// errorNoArgs is returned when no arguments are passed to the command
-var errNoArgs = errors.New("missing required argument(s)")
-
 func parseArgs(cmd *flag.FlagSet, opts *cmdOpts, args []string) error {
 	if len(args) == 0 {
 		return errNoArgs
 	}
-
 	err := cmd.Parse(args)
 	if err != nil {
 		return err
@@ -84,8 +88,8 @@ func parseArgs(cmd *flag.FlagSet, opts *cmdOpts, args []string) error {
 	if cmd.NArg() != 1 {
 		return errors.New("must specify base 10 integer to encode as single positional argument")
 	}
-	num, err := strconv.ParseUint(cmd.Arg(0), 10, 64)
-	if err != nil {
+	num, nerr := strconv.ParseUint(cmd.Arg(0), 10, 64)
+	if nerr != nil {
 		return fmt.Errorf("could not parse positional argument %s as uint64", cmd.Arg(0))
 	}
 	opts.num = num

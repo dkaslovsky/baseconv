@@ -9,13 +9,6 @@ import (
 	"github.com/dkaslovsky/baseconv/pkg/baseconv"
 )
 
-type cmdOpts struct {
-	// command flags
-	base uint64
-	// positional args
-	enc string
-}
-
 // Run executes the decode (sub)command
 func Run(args []string) error {
 	cmd := flag.NewFlagSet("decode", flag.ExitOnError)
@@ -32,18 +25,33 @@ func Run(args []string) error {
 		return err
 	}
 
+	return run(opts)
+}
+
+func run(opts *cmdOpts) error {
 	numeric, err := alphabet.FromString(opts.enc)
 	if err != nil {
 		return err
 	}
 
-	dec, err := baseconv.ToBase10(numeric, opts.base)
-	if err != nil {
-		return err
+	dec, derr := baseconv.ToBase10(numeric, opts.base)
+	if derr != nil {
+		return derr
 	}
 
 	fmt.Println(dec)
 	return nil
+}
+
+// errorNoArgs is returned when no arguments are passed to the command
+var errNoArgs = errors.New("missing required argument(s)")
+
+type cmdOpts struct {
+	// command flags
+	base uint64
+
+	// positional args
+	enc string
 }
 
 func attachOpts(cmd *flag.FlagSet, opts *cmdOpts) {
@@ -51,14 +59,10 @@ func attachOpts(cmd *flag.FlagSet, opts *cmdOpts) {
 	cmd.Uint64Var(&opts.base, "base", 0, "base of input number")
 }
 
-// errorNoArgs is returned when no arguments are passed to the command
-var errNoArgs = errors.New("missing required argument(s)")
-
 func parseArgs(cmd *flag.FlagSet, opts *cmdOpts, args []string) error {
 	if len(args) == 0 {
 		return errNoArgs
 	}
-
 	err := cmd.Parse(args)
 	if err != nil {
 		return err

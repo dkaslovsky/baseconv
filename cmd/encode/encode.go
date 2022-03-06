@@ -102,7 +102,7 @@ func validateOpts(opts *cmdOpts) error {
 	if opts.base > maxBase {
 		return fmt.Errorf("base [%d] exceeds alphabet size [%d]", opts.base, maxBase)
 	}
-	maxNum, err := baseconv.GetLargestBase10Number(opts.base, opts.maxDigits)
+	maxNum, err := baseconv.GetLargestBase10(opts.base, opts.maxDigits)
 	if err != nil {
 		return err
 	}

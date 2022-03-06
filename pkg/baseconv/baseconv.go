@@ -9,11 +9,10 @@ import (
 const roundoffTol = 1e-8
 
 // FromBase10 converts a base 10 number to a slice representing the number in a specified base
-func FromBase10(num, base uint64) ([]uint64, error) {
+func FromBase10(num uint64, base uint64) ([]uint64, error) {
 	if err := validateBase(base); err != nil {
-		return []uint64{0}, err
+		return nil, err
 	}
-
 	if num == 0 {
 		return []uint64{0}, nil
 	}
@@ -41,22 +40,22 @@ func ToBase10(num []uint64, base uint64) (uint64, error) {
 
 	b := float64(base)
 	numDigits := len(num)
-
-	var base10 uint64 = 0
+	base10 := uint64(0)
 
 	for i, n := range num {
 		if n >= base {
-			return 0, fmt.Errorf("digit [%d] must be less than base [%d]", n, base)
+			return 0, fmt.Errorf("cannot convert digit [%d] to base [%d]", n, base)
 		}
 		exponent := numDigits - i - 1
 		base10 += n * uint64(math.Pow(b, float64(exponent)))
 	}
+
 	return base10, nil
 }
 
-// GetLargestBase10Number returns the largest base 10 number that can be represented
+// GetLargestBase10 returns the largest base 10 number that can be represented
 // in the specified base with the specified number of digits
-func GetLargestBase10Number(base, digits uint64) (uint64, error) {
+func GetLargestBase10(base uint64, digits uint64) (uint64, error) {
 	if err := validateBase(base); err != nil {
 		return 0, err
 	}
@@ -70,13 +69,15 @@ func validateBase(base uint64) error {
 	return nil
 }
 
-func getNumDigits(num, base, tol float64) int {
+func getNumDigits(num float64, base float64, tol float64) int {
 	logN := math.Log(num) / math.Log(base)
+
 	// correct for roundoff error near an integer value of logN that causes problems with flooring;
 	// this usually happens when num is an exact power of base
 	rounded := math.Round(logN)
 	if math.Abs(rounded-logN) < tol {
 		return int(rounded) + 1
 	}
+
 	return int(math.Floor(logN)) + 1
 }

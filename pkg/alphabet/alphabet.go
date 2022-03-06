@@ -7,7 +7,7 @@ import (
 
 const alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-// FromString maps a string of characters to a slice of corresponding numbers
+// FromString converts a string of characters to a slice of corresponding numbers
 func FromString(str string) ([]uint64, error) {
 	numeric := []uint64{}
 	for _, s := range str {
@@ -20,7 +20,7 @@ func FromString(str string) ([]uint64, error) {
 	return numeric, nil
 }
 
-// ToString maps a slice of numbers to a string of corresponding characters
+// ToString converts a slice of numbers to a string of corresponding characters
 func ToString(numeric []uint64) (string, error) {
 	str := []byte{}
 	for _, n := range numeric {

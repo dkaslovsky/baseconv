@@ -21,11 +21,16 @@ $ baseconv -h
 baseconv converts between base 10 integers and string representations in arbitraty bases
 
 Usage:
-  baseconv command [flags]
+  baseconv [flags]
+  baseconv [command]
 
-Commands:
-  encode - encodes a base 10 integer in a new base
-  decode - decodes a string representation of a base 10 integer
+Available Commands:
+  encode	encodes a base 10 integer in a new base
+  decode	decodes a string representation of a base 10 integer
+
+Flags:
+  -h, -help	help for baseconv
+  -v, -version	version for baseconv
 ```
 The `encode` command accepts a base 10 integer as its only positional argument and flags specify the new base, the maximum number of digits to be used, and whether the result should be padded to contain exactly that number of digits:
 ```
@@ -34,10 +39,10 @@ $ baseconv encode -h
 encode encodes a base 10 integer in a new base
 
 Usage:
-  encode [flags] base10Int
+  encode [flags] NUM
 
 Args:
-  base10Int - positive base 10 integer to encode (required)
+  NUM	positive base 10 integer to encode (required)
 
 Flags:
   -b uint
@@ -55,8 +60,8 @@ Flags:
 
 For example,
 ```
-$ baseconv encode -b 62 -d 7 1000000000000
-hBxM5A4
+$ baseconv encode -b 62 -d 7 1000000000001
+hBxM5A5
 ```
 
 The `decode` command performs the inverse of the encoding: it converts a string representation in a specified base to a base 10 integer.  It accepts the string as its only positional argument and the base is specified as a flag:
@@ -66,22 +71,22 @@ $ baseconv decode -h
 decode decodes a string representation of a base 10 integer from an arbitrary base
 
 Usage:
-  decode [flags] stringRep
+  decode [flags] STRINGREP
 
 Args:
-  stringRep - string representation of an encoded base 10 integer to decode (required)
+  STRINGREP	string representation of an encoded base 10 integer to decode (required)
 
 Flags:
   -b uint
-    	new base to encode input integer
+    	base of input number
   -base uint
-    	new base to encode input integer
+    	base of input number
 ```
 
 For example,
 ```
-$ baseconv decode -b 62 hBxM5A4
-1000000000000
+$ baseconv decode -b 62 hBxM5A5
+1000000000001
 ```
 
 ## Package Usage

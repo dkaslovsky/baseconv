@@ -47,8 +47,8 @@ func Run(args []string) error {
 }
 
 func attachOpts(cmd *flag.FlagSet, opts *cmdOpts) {
-	cmd.Uint64Var(&opts.base, "b", 0, "new base to encode input integer")
-	cmd.Uint64Var(&opts.base, "base", 0, "new base to encode input integer")
+	cmd.Uint64Var(&opts.base, "b", 0, "base of input number")
+	cmd.Uint64Var(&opts.base, "base", 0, "base of input number")
 }
 
 // errorNoArgs is returned when no arguments are passed to the command
@@ -84,9 +84,13 @@ func validateOpts(opts *cmdOpts) error {
 func setUsage(cmd *flag.FlagSet) {
 	cmd.Usage = func() {
 		fmt.Printf("%s decodes a string representation of a base 10 integer from an arbitrary base\n\n", cmd.Name())
+
 		fmt.Print("Usage:\n")
-		fmt.Printf("  %s [flags] stringRep\n\n", cmd.Name())
-		fmt.Printf("Args:\n  stringRep - string representation of an encoded base 10 integer to decode (required)\n\n")
+		fmt.Printf("  %s [flags] STRINGREP\n\n", cmd.Name())
+
+		fmt.Print("Args:\n")
+		fmt.Printf("  STRINGREP\tstring representation of an encoded base 10 integer to decode (required)\n\n")
+
 		fmt.Printf("Flags:\n")
 		cmd.PrintDefaults()
 	}

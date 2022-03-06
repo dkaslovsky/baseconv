@@ -1,15 +1,21 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"os"
 
 	"github.com/dkaslovsky/baseconv/cmd"
 )
 
+const (
+	name    = "baseconv"
+	version = "0.0.1"
+)
+
 func main() {
-	err := cmd.Run(os.Args)
+	err := cmd.Run(name, version, os.Args)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("%s: %v\n", name, err)
+		os.Exit(1)
 	}
 }

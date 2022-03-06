@@ -103,14 +103,14 @@ import "github.com/dkaslovsky/baseconv/pkg/baseconv"
 and provides the following functions:
 ```go
 // FromBase10 converts a base 10 number to a slice representing the number in a specified base
-func FromBase10(num, base uint64) ([]uint64, error)
+func FromBase10(num uint64, base uint64) ([]uint64, error)
 
 // ToBase10 converts a number in a specified base represented by a slice into its base 10 value
 func ToBase10(num []uint64, base uint64) (uint64, error)
 
-// GetLargestBase10Number returns the largest base 10 number that can be represented
+// GetLargestBase10 returns the largest base 10 number that can be represented
 // in the specified base with the specified number of digits
-func GetLargestBase10Number(base, digits uint64) (uint64, error)
+func GetLargestBase10(base uint64, digits uint64) (uint64, error)
 ```
 
 ### alphabet
@@ -120,10 +120,10 @@ import "github.com/dkaslovsky/baseconv/pkg/alphabet"
 ```
 and provides the following functions:
 ```go
-// FromString maps a string of characters to a slice of corresponding numbers
+// FromString converts a string of characters to a slice of corresponding numbers
 func FromString(str string) ([]uint64, error)
 
-// ToString maps a slice of numbers to a string of corresponding characters
+// ToString converts a slice of numbers to a string of corresponding characters
 func ToString(numeric []uint64) (string, error)
 
 // Pad appends the zero character of the alphabet to a string to produce a string of desired length

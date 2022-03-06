@@ -8,7 +8,7 @@ baseconv can be used to efficiently encode very large integers into short, uniqu
 By converting a large base 10 integer to a different base, the original integer is encoded in a string representation using fewer bits.
 
 URL shorteners often use such encodings to map integer database keys to unique slugs that serve as shortened URLs.
-For example, the `1,000,000,000,000`th URL stored in a database can be mapped to the unique slug `hBxM5A4` by converting to base 62.  Given this slug as part of a URL (e.g., `shorturl.xyz/hBxM5A4`), it can be uniquely mapped back to the integer key used to lookup the full URL.
+For example, the `1,000,000,000,001`st URL stored in a database can be mapped to the unique slug `hBxM5A5` by converting to base 62.  Given this slug as part of a URL (e.g., `shorturl.xyz/hBxM5A5`), it can be uniquely mapped back to the integer key used to lookup the full URL.
 
 baseconv uses an alphabet that supports encoding in base b, 2 <= b <= 62.
 
